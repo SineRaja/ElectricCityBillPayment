@@ -1,0 +1,53 @@
+{% extends 'navbar1.html' %}
+{% load static %}
+{% block body1 %}
+
+<div class="card shadow m-5" style="box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
+    <div class="card-body">
+		<h5 class="p-2" style="border-bottom: 2px solid orange">View All Bill</h5>
+      <div class="container m-5">
+		<h1 class="text-success text-center"></h1>
+
+		<br>
+		<table id="example" class="table table-striped table-bordered" style="width:100%;  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
+			<thead class="bg-Success" style="background-color: #9e9e9e">
+				<tr>
+					<th class="text-Dark">Bill ID</th>
+					<th class="text-Dark">Connection ID</th>
+					<th class="text-Dark">Bill For Month</th>
+					<th class="text-Dark">Current Day Reading</th>
+					<th class="text-Dark">Previous Day Reading</th>
+					<th class="text-Dark">Current Night Reading</th>
+					<th class="text-Dark">Previous Night Reading</th>
+					<th class="text-Dark">Current Gas Reading</th>
+					<th class="text-Dark">Previous Gas Reading</th>
+					<th class="text-Dark">Final Amount</th>
+					<th class="text-Dark">Due_Date</th>
+					<th class="text-Dark">Status</th>
+					<th class="text-Dark">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+              {% for i in bill %}
+			  <tr>
+				  <td>{{forloop.counter}}</td>
+				  <td>{{i.connection.customerconnectionid}}</td>
+				  <td>{{i.billformonth}}</td>
+				  <td>{{i.dayelectricitycurrentreading}}</td>
+				  <td>{{i.dayelectricitypreviousreading}}</td>
+				  <td>{{i.nightelectricitycurrentreading}}</td>
+				  <td>{{i.nightelectricitypreviousreading}}</td>
+				  <td>{{i.gascurrentreading}}</td>
+				  <td>{{i.gaspreviousreading}}</td>
+				  <td>{{i.finalamount}}</td>
+				  <td>{{i.duedate}}</td>
+				  <td>{{i.status}}</td>
+				  <td><a href="{% url 'delete_Bill' i.id %}" class="btn btn-danger" onclick="return confirm('Are you sure to delete this Connection Details ?')">Delete</a></td>
+			  </tr>
+			  {% endfor %}
+			</tbody>
+		</table>
+	</div>
+	</div>
+</div>
+{% endblock %}

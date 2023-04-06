@@ -1,0 +1,385 @@
+{% extends 'navbar1.html' %}
+{% load static %}
+{% block body1 %}
+
+{% if error == "no" %}
+     <script>
+	   alert('New Bill has been Added...');
+	   window.location=('{% url 'view_Bill' %}');
+     </script>
+{% endif %}
+
+{% if error == "yes" %}
+     <script>
+	    alert('Something went wrong, Try Again');
+     </script>
+{% endif %}
+
+<script>
+
+  {% comment %} function calculate(){
+
+    var totaldayunits1 = document.getElementById("totaldayunit").value;
+    var totalnightunit1 = document.getElementById("totalnightunit").value;
+    var totalgasunits1 = document.getElementById("totalgastunit").value;
+
+    var chargeperdayunit1 = document.getElementById(
+      "chargeperunitforday"
+    ).value;
+    var chargeperNightunit1 = document.getElementById(
+      "chargeperunitfornight"
+    ).value;
+    var chargeperGasunit1 = document.getElementById(
+      "chargeperunitforgas"
+    ).value;
+    var standingChargeunit = document.getElementById("stadingchargeper").value;
+
+    var totaldayamount =
+      parseInt(totaldayunits1) * parseFloat(chargeperdayunit1);
+    var totalnightamount =
+      parseInt(totalnightunit1) * parseFloat(chargeperNightunit1);
+    var totalgastamount =
+      parseInt(totalgasunits1) * parseFloat(chargeperGasunit1);
+    var standingamount = parseInt("30") * parseFloat(standingChargeunit);
+
+    var totalamount =
+      totaldayamount + totalnightamount + totalgastamount + standingamount;
+    document.getElementById("finalamount").value = totalamount;
+  } {% endcomment %}
+
+  function calc() {
+    var currentreading1 = document.getElementById("currentdayreading").value;
+    var previousreading1 = document.getElementById("previousdayreading").value;
+    var totaldayunits = parseInt(currentreading1) - parseInt(previousreading1);
+
+    var currentnightreading1 = document.getElementById(
+      "currentnightreading"
+    ).value;
+    var previousnightreading1 = document.getElementById(
+      "previousnightreading"
+    ).value;
+    var totalnightunits =
+      parseInt(currentnightreading1) - parseInt(previousnightreading1);
+
+    var gasReaging1 = document.getElementById("currentgasreading").value;
+    var previousgasreading1 =
+      document.getElementById("previousgasreading").value;
+    var totalgastunits = parseInt(gasReaging1) - parseInt(previousgasreading1);
+
+    var date1 = document.getElementById("newbilldate").valueAsDate;
+    var date2 = document.getElementById("lastmonthdate").valueAsDate;
+
+    var Difference_In_Time = date1.getTime() - date2.getTime();
+
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+    console.log(Difference_In_Days);
+
+    var chargeperdayunit1 = document.getElementById(
+      "chargeperunitforday"
+    ).value;
+    var chargeperNightunit1 = document.getElementById(
+      "chargeperunitfornight"
+    ).value;
+    var chargeperGasunit1 = document.getElementById(
+      "chargeperunitforgas"
+    ).value;
+    var standingChargeunit = document.getElementById("stadingchargeper").value;
+
+    var totaldayamount =
+      parseInt(totaldayunits) * parseFloat(chargeperdayunit1);
+    var totalnightamount =
+      parseInt(totalnightunits) * parseFloat(chargeperNightunit1);
+    var totalgastamount =
+      parseInt(totalgastunits) * parseFloat(chargeperGasunit1);
+    var standingamount = parseInt(Difference_In_Days) * parseFloat(standingChargeunit);
+
+    var totalamount =
+      totaldayamount + totalnightamount + totalgastamount + standingamount;
+    document.getElementById("finalamount").value = totalamount;
+
+  } 
+
+  function caldayunits() {
+    var currentreading1 = document.getElementById("currentdayreading").value;
+
+    var previousreading1 = document.getElementById("previousdayreading").value;
+    var totalunits = parseInt(currentreading1) - parseInt(previousreading1);
+
+    document.getElementById("totaldayunit").value = totalunits;
+  }
+
+  function calcNight() {
+    var currentnightreading1 = document.getElementById(
+      "currentnightreading"
+    ).value;
+
+    var previousnightreading1 = document.getElementById(
+      "previousnightreading"
+    ).value;
+    var totalnightunits =
+      parseInt(currentnightreading1) - parseInt(previousnightreading1);
+
+    document.getElementById("totalnightunit").value = totalnightunits;
+  }
+
+  function calcGas() {
+    var gasReaging1 = document.getElementById("currentgasreading").value;
+
+    var previousgasreading1 =
+      document.getElementById("previousgasreading").value;
+    var totalgastunits = parseInt(gasReaging1) - parseInt(previousgasreading1);
+
+    document.getElementById("totalgastunit").value = totalgastunits;
+  }
+</script>
+
+<div class="card shadow m-5">
+  <div class="card-body">
+    <h5 class="p-2" style="border-bottom: 2px solid orange">Add New Bill</h5>
+
+    <div class="container-fluid">
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-row">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>Consumer ID</label>
+              <select name="connectionid" class="form-control">
+                {% for i in connection1 %}
+                <option value="{{i.id}}">{{i.customerconnectionid}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          {% comment %} <div class="col-sm-12">
+            <div class="form-group">
+              <label>Bill For Month</label>
+              <input
+                type="text"
+                name="billformonth"
+                class="form-control"
+                placeholder="Enter Bill For Month"
+              />
+            </div>
+          </div> {% endcomment %}
+
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>New Bill Date</label>
+              <input type="date" name="newbilldate" id="newbilldate" class="form-control" />
+            </div>
+          </div>
+
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>Last Month Bill Date</label>
+              <input type="date" name="lastmonthdate" id="lastmonthdate" class="form-control" />
+            </div>
+          </div>
+
+          {% comment %} Day current Details {% endcomment %}
+
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>Day Reading</label>
+              <input
+                type="text"
+                name="currentdayreading"
+                id="currentdayreading"
+                class="form-control"
+                placeholder="Enter Day Current Reading"
+              />
+            </div>
+          </div>
+
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>Previous Day Reading</label>
+              <input
+                type="text"
+                name="previousdayreading"
+                id="previousdayreading"
+                class="form-control"
+                onkeyup="caldayunits()"
+              />
+            </div>
+          </div>
+{% comment %} 
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>Total Unit</label>
+              <input
+                type="text"
+                name="totaldayunit"
+                id="totaldayunit"
+                class="form-control"
+                placeholder="Enter Total Unit"
+              />
+            </div>
+          </div> {% endcomment %}
+
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>Charge Per Unit</label>
+              <input
+                type="text"
+                name="chargeperunitforday"
+                id="chargeperunitforday"
+                class="form-control"
+    
+              />
+            </div>
+          </div>
+
+          {% comment %} Night Current Details {% endcomment %}
+
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>Night Reading</label>
+              <input
+                type="text"
+                name="currentnightreading"
+                id="currentnightreading"
+                class="form-control"
+                placeholder="Enter Night Current Reading"
+              />
+            </div>
+          </div>
+
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>Previous Night Reading</label>
+              <input
+                type="text"
+                name="previousnightreading"
+                id="previousnightreading"
+                class="form-control"
+                onkeyup="calnightunits()"
+              />
+            </div>
+          </div>
+
+          {% comment %} <div class="col-sm-12">
+            <div class="form-group">
+              <label>Total Night Unit</label>
+              <input
+                type="text"
+                name="totalnightunit"
+                id="totalnightunit"
+                class="form-control"
+                placeholder="Enter Total Unit"
+              />
+            </div>
+          </div> {% endcomment %}
+
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>Charge Per Unit For Night</label>
+              <input
+                type="text"
+                name="chargeperunitfornight"
+                id="chargeperunitfornight"
+                class="form-control"
+                onkeyup="calcNight()"
+              />
+            </div>
+          </div>
+
+          {% comment %} Gas Details {% endcomment %}
+
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>Gas Reading</label>
+              <input
+                type="text"
+                name="currentgasreading"
+                id="currentgasreading"
+                class="form-control"
+                placeholder="Enter Gas Current Reading"
+              />
+            </div>
+          </div>
+
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>Previous Gas Reading</label>
+              <input
+                type="text"
+                name="previousgasreading"
+                id="previousgasreading"
+                class="form-control"
+                onkeyup="calgasunits()"
+              />
+            </div>
+          </div>
+
+          {% comment %} <div class="col-sm-12">
+            <div class="form-group">
+              <label>Total Unit</label>
+              <input
+                type="text"
+                name="totalgastunit"
+                id="totalgastunit"
+                class="form-control"
+                placeholder="Enter Total Unit"
+              />
+            </div>
+          </div> {% endcomment %}
+
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>Charge Per Unit For Gas</label>
+              <input
+                type="text"
+                name="chargeperunitforgas"
+                id="chargeperunitforgas"
+                class="form-control"
+                onkeyup="calcGas()"
+              />
+            </div>
+          </div>
+
+          {% comment %} Standing charge per day {% endcomment %}
+
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>Standing charge per day</label>
+              <input
+                type="text"
+                name="stadingchargeper"
+                id="stadingchargeper"
+                class="form-control"
+                onkeyup="calc()"
+              />
+            </div>
+          </div>
+
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>Final Amount</label>
+              <input
+                type="text"
+                name="finalamount"
+                id="finalamount"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label>Due Date</label>
+              <input type="date" name="duedate" class="form-control" />
+            </div>
+          </div>
+        </div>
+        <hr />
+        <input type="submit" value="Submit" class="btn btn-primary" />
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

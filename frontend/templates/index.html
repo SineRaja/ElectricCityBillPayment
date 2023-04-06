@@ -1,0 +1,55 @@
+{% include 'usernavbar.html' %}
+{% load static %}
+
+
+
+
+<html>
+<head>
+	<title>Electricity Billing - Index Page</title>
+</head>
+   <br><br><br>
+
+<style>
+body{
+ background-color: #ffffff;
+
+}
+</style>
+
+<body>
+<br>
+	<div class="container mt-5">
+		<h1 class="text-center "></h1>
+		<div class="col-sm-8 m-auto d-block">
+			<div class="card">
+				<div class="card-body">
+					  <form method="post">
+						  {% csrf_token %}
+						<div class="form-group">
+							<label><b>Enter your mail address</b></label>
+							<input type="text" name="customernumber" class="form-control" placeholder="Enter your Email address" required>
+						</div><br>
+						<div class="form-group">
+							<label><b>Enter your password</b></label>
+							<input type="password" name="password" class="form-control" placeholder="Enter Password" required>
+						</div><br>
+						<div class="form-group">
+					      <input type="submit" value="Login" class="btn btn-primary btn-lg btn-block">
+						  {% if messages %}
+							<ul class="messages">
+								{% for message in messages %}
+								<li style="color:red; list-style: none;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+								{% endfor %}
+							</ul>
+						  {% endif %}
+					    </div>
+						<span> If you don't have account, <a href="{% url 'add_Customer'%}">Create New Account</a></span>
+					  </form>
+				 </div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+

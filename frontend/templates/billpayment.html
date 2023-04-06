@@ -1,0 +1,188 @@
+{% include 'usernavbar.html' %}
+{% load static %}
+
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title>Payment</title>
+	   <!-- CSS  -->
+    <link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+       <link
+		href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+		rel="stylesheet" id="bootstrap-css">
+	<script
+		src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    	<link rel="stylesheet"
+		href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery.payment/1.2.3/jquery.payment.min.js"></script>
+
+    	<style>
+            body {
+                background: url("images/electric.jpg");
+                background-size: 100%;
+                background-repeat: no-repeat;
+                width: 100%;
+                height: 50vh;
+            }
+
+        </style>
+        <script type="text/javascript" src="lib.js"></script>
+        <script>
+            function calc(){
+                // var finalamount = document.getElementById("paymentdetails").value;
+                const voucher = [
+                    { "code":"XTX2GZAD",
+                    "active":"false" },
+                    { "code":"NDA7SY2V",
+                    "active":"true" },
+                    { "code":"RVA7DZ2D",
+                    "active":"true" },
+                    { "code":"DM8LEESR",
+                    "active":"true" },
+                    
+                ]
+            
+                var codeenter = document.getElementById("voucherid").value;
+                var cond = false
+                for(let i = 0; i < voucher.length; i++) {
+                    //console.log(voucher[i])
+                    if (voucher[i].code === codeenter && voucher[i].active === "true"){
+                        console.log("yes")
+                            cond =true
+                            break;
+                    } 
+                    else
+                    {
+                        console.log("no");
+
+                    }
+                }
+
+                if (cond) {
+                    fina = {{bill.finalamount}}
+                    console.log(fina)
+    
+                    var amountdisplay = document.getElementById("amountdis");
+                    amountdisplay.value = parseInt(fina) - parseInt("100");
+                    alert('Hurray,you got £200 ');
+                }
+                else{
+                    alert('Sorry, the voucher is not valid'); 
+                }
+{% comment %} 
+                fina = {{bill.finalamount}}
+                console.log(fina)
+
+                
+
+                var amountdisplay = document.getElementById("amountdis");
+                amountdisplay.value = parseInt(fina) - parseInt("100"); {% endcomment %}
+
+                //document.getElementById("paymentdetails").value = parseInt(fina) - parseInt("100"); 
+                
+            }
+        </script>
+    </head>
+    <body>
+ <br><br> <br><br>
+ 
+ 
+     <div class="container">
+         <div class="row">
+             <!-- You can make it whatever width you want. I'm making it full width
+              on <= small devices and 4/12 page width on >= medium devices -->
+             <div class="col-xs-4 col-md-4"></div>
+             <div class="col-xs-4 col-md-4">
+ 
+ 
+                 <!-- CREDIT CARD FORM STARTS HERE -->
+                     <div class="panel-body">
+ 
+                         <form method="POST">
+                             {% csrf_token %}
+
+                             <h4>You Payment due is <span class="paymentdetails" id="paymentdetails">{{bill.finalamount}}</span></h4>
+ 
+                             <div class="row">
+                                 <div class="col-xs-12">
+                                     <div class="form-group">
+                                         <label for="cardNumber">Pay Pal Number</label>
+                                         <div class="input-group">
+                                             <input type="tel" class="form-control" name="cardnumber"
+                                                 placeholder="Valid paypal Number" 
+                                                 autofocus /> <span class="input-group-addon"><i
+                                                 class="fa fa-paypal"></i></span>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+ 
+                             <div class="row">
+                                 <div class="col-xs-12 col-md-12">
+                                     <div class="form-group">
+                                         <label for="voucher"><span class="hidden-xs">Voucher</span></label> 
+                                         <div class="input-group">
+                                            <input type="tel"
+                                                class="form-control" name="voucherid"  id="voucherid" placeholder="Enter your Voucher code"
+                                                /><span class="input-group-addon"><i
+                                                    class="fa fa-gift"></i></span>
+                                            
+                                         </div>
+                                         <input type="button" onclick="calc()" value="Click">
+                                         <p id="error"></p>
+                                         {% comment %} <a href='javascript:;' class="voucherbutton" id="voucherbutton" onclick="calc();">click here</a> {% endcomment %}
+                                     </div>
+                                 </div>
+ 
+                             <div class="row">
+                                 <div class="col-xs-12 col-md-12 m-4">
+                                     <div class="form-group">
+                                         <label for="couponCode">Amount In £</label>
+                                         <input type="text" class="form-control" id="amountdis" value="{{bill.finalamount}}"
+                                             name="amount" readonly />
+                                        <p  class="paydis" id="paydis"></p>
+                                     </div>
+                                 </div>
+                             </div>
+ 
+                             <div class="col-xs-12">
+                                 <input type="submit" class="btn btn-success btn-lg btn-block"
+                                     name="payment" value="payment" >
+                             </div>
+                     </div>
+                     <div class="row" style="display: none;">
+                         <div class="col-xs-12">
+                             <p class="payment-errors"></p>
+                         </div>
+                     </div>
+ 
+                     </form>
+ 
+                 </div>
+             </div>
+             <!-- CREDIT CARD FORM ENDS HERE -->
+         </div>
+     </div>
+     </div>
+ 
+ </body>
+ </html>
+ 
+ {% if error == "no" %}
+      <script>
+        alert('Bill Paid SuccessFully');
+        window.location=('{% url 'index' %}');
+      </script>
+ {% endif %}
+ 
+ {% if error == "yes" %}
+      <script>
+         alert('Something went wrong, Try Again');
+      </script>
+ {% endif %}

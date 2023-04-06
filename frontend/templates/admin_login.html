@@ -1,0 +1,72 @@
+
+{% load static %} {% if error == "no" %}
+<script>
+  alert('Logged In Successfully');
+     window.location=('{% url 'admin_home' %}');
+</script>
+{% endif %} {% if error == "yes" %}
+<script>
+  alert("Something went wrong, Try Again");
+</script>
+{% endif %}
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Admin Login Form</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="{% static 'css/style1.css' %}" />
+  </head>
+  <body>
+    <div class="container bg-white w-100 center">
+      <div class="row">
+        <div class="col pt-5">
+          <h1 className="login_header_style" 
+            style="font-family: 'georgia';  font-weight: bold; text-align: center; font-size: 24px;color: #F36825;">
+            Coursework 2 Mini Web/App Project <br />
+            <span className="span_design" style="color: #0E2C4B;">iGSE An Energy Tool</span>
+          </h1>
+          <img
+            src="{% static 'images/login.jpg' %}"
+            className="login-image-design" width="450" height="450"
+            alt="logo"
+          />
+        </div>
+
+        <div class="col pt-5">
+          <div class="wrapper">
+            <div class="title">Admin Login</div>
+            <form method="post">
+              {% csrf_token %}
+              <div class="field">
+                <input type="text" name="userfullname" required />
+                <label>Username</label>
+              </div>
+              <div class="field">
+                <input type="password" name="userpassword" required />
+                <label>Password</label>
+              </div>
+
+              <div class="field">
+                <input type="submit" value="Login" />
+              </div>
+              <div class="signup-link">
+                <a href="{% url 'index' %}">Back to Home</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
